@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ super() }}{% endblock %}
+
+{% block app_content %}
+<div class="container">
+  <div class="col-md-8">
+    {% if messages %}
+      {% for message in messages %}
+      {% if message.to != my_number %}
+        <h5 class="text-right">{{ message.to }}</h5>
+        <div class="alert alert-info text-right">
+          <!-- <button type="button" class="close pull-left" data-dismiss="alert" aria-hidden="true">&times;</button> -->
+          {{ message.body }}
+        </div>
+      {% else %}
+        <h5>{{ message.from_ }}</h5>
+        <div class="alert alert-success">
+          <!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
+          {{ message.body }}
+        </div>
+      {% endif %}
+      <hr>
+      {% endfor %}
+    {% endif %}
+    <form action="{{ url_for('send_message') }}" method="POST" role="form">
+      {{ messageForm.hidden_tag() }}
+      <div class="form-group">
+        {{ messageForm.send_to(class='form-control send-to', placeholder='e.g.: 5555555555') }}
+      </div>
+      <div class="form-group">
+        {{ messageForm.message(class='form-control', placeholder='Message') }}
+      </div>
+      {{ messageForm.submit(class='btn btn-primary') }}
+    </form>
+  </div>
+  <div class="col-md-4">
+    {% include './includes/contacts.html' %}
+  </div>
+</div>
+{% endblock %}
